@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Explore the App</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		body {
+			height: 100vh;
+			margin: 0;
+			background: linear-gradient(to bottom, #00d8ff, #7797b9, #8972a8, #a200ff93, rgba(212, 156, 104, 0.459));
+		}
+
+		.container {
+			width: 320px;
+			background-color: white;
+			border-radius: 20px;
+			padding: 30px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+			text-align: center;
+			position: relative;
+		}
+
+		.back-arrow {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			font-size: 30px;
+			cursor: pointer;
+		}
+
+		.illustration {
+			width: 100px;
+			margin-bottom: 20px;
+		}
+
+		h1 {
+			margin: 10px 0;
+			color: #333;
+		}
+
+		p {
+			color: #777;
+			font-size: 14px;
+			margin-bottom: 30px;
+		}
+
+		button {
+			width: 100%;
+			padding: 12px;
+			margin-bottom: 15px;
+			border: none;
+			border-radius: 10px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		.sign-in {
+			background-color: black;
+			color: white;
+		}
+
+		.create-account {
+			background-color: #f0f0f0;
+			color: #333;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="content">
+			<img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png" alt="Stars illustration"
+				class="illustration">
+			<h1>Explore the app</h1>
+			<p>Come discover your next favourite read at <br><i>*UNiBook HUB*<i><br><br>
+						<button class="sign-in" onclick="signIn()">Sign in</button>
+						<button class="create-account" onclick="createAccount()">Create account</button>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+
+</html>

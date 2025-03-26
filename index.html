@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>E-Library | unibook hub</title>
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f8f8f8;
+			color: #333;
+			line-height: 1.6;
+		}
+
+		.sidebar {
+			width: 250px;
+			height: 100vh;
+			background: #4fb7e0;
+			color: #000000;
+			position: fixed;
+			left: 0;
+			top: 0;
+			padding-top: 20px;
+			transform: translateX(-100%);
+			transition: transform 0.3s ease-in-out;
+		}
+
+		.sidebar a {
+			padding: 15px;
+			display: block;
+			color: white;
+			text-decoration: none;
+		}
+
+		.sidebar a:hover {
+			background: #4fb7e0;
+		}
+
+		.menu-btn {
+			font-size: 24px;
+			cursor: pointer;
+			padding: 2px;
+			background-color: ;
+			/* color: white; */
+			border: none;
+			position: fixed;
+			top: 15px;
+			left: 15px;
+			z-index: 50;
+		}
+
+		.sidebar.active {
+			z-index: 50;
+			transform: translateX(0);
+		}
+
+		.overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+		}
+
+		.overlay.active {
+			display: block;
+			margin-left: 250px;
+			z-index: 50;
+		}
+
+		.menu-btn.active {
+			display: none;
+		}
+
+		#hamburger {
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
+		}
+
+		#hamburger .hamburger-bar {
+			background-color: #000000;
+			width: 20px;
+			height: 3px;
+		}
+
+		.head1 {
+			background: linear-gradient(135deg, #4fb7e0, #8344c7, #5392e6);
+			color: white;
+			text-align: center;
+			padding: 2em 0;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.head1 h1 {
+			font-family: cursive;
+			font-size: 3em;
+			margin-bottom: 0.2em;
+		}
+
+		nav {
+			background-color: rgba(0, 0, 0, 0.05);
+			text-align: center;
+			padding: 1em 0;
+		}
+
+		nav a {
+			color: #aa5dc9;
+			text-decoration: none;
+			padding: 0.7em 1.5em;
+			margin: 0 0.5em;
+			border-radius: 25px;
+			transition: background-color 0.3s ease, color 0.3s ease;
+		}
+
+		nav a:hover,
+		nav a.active {
+			background-color: #463b3b;
+			color: #e6e6e6;
+		}
+
+		.hub {
+			background: linear-gradient(rgba(4, 87, 165, 0.61), rgba(0, 132, 255, 0.568), rgba(212, 156, 104, 0.459)), url('library-hero-2.jpg');
+			background-size: 70%;
+			background-position: center;
+			border: #333;
+			color: rgb(255, 255, 255);
+			text-align: center;
+			padding: 150px 0;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.hub h1 {
+			font-family: 'Playfair Display', serif;
+			font-size: 3.5em;
+			margin-bottom: 0.5em;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+		}
+
+		.hub p {
+			font-size: 1.3em;
+			margin-bottom: 2em;
+			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+		}
+
+		.hub button {
+			background-color: #0099ff;
+			color: white;
+			padding: 1em 2em;
+			border: none;
+			border-radius: 30px;
+			font-size: 1.1em;
+			cursor: pointer;
+			transition: background-color 0.3s ease, transform 0.2s ease;
+		}
+
+		.hub button:hover {
+			background-color: #024491;
+			transform: translateY(-3px);
+		}
+
+		.featured-books {
+			padding: 3em 2em;
+			text-align: center;
+		}
+
+		.book-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 30px;
+			margin-top: 3em;
+			padding: 0 2em;
+		}
+
+		.book {
+			background-color: white;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+			transition: transform 0.3s ease;
+		}
+
+		.book:hover {
+			transform: translateY(-5px);
+		}
+
+		.book img {
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+			border-bottom: 1px solid #eee;
+		}
+
+		.book-info {
+			padding: 1.5em;
+			text-align: left;
+		}
+
+		.book-info h3 {
+			margin-bottom: 0.5em;
+			font-size: 1.2em;
+		}
+
+		.book-info p {
+			color: #666;
+			font-size: 0.9em;
+		}
+
+		footer {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 2em 0;
+			margin-top: 4em;
+		}
+	</style>
+</head>
+
+<body>
+	<button class="menu-btn" id="hamburger" onclick="toggleSidebar()">
+		<div class="hamburger-bar"></div>
+		<div class="hamburger-bar"></div>
+		<div class="hamburger-bar"></div>
+	</button>
+
+	<div class="sidebar" id="sidebar">
+		<a href="#">Profile</a>
+		<a href="#">Catagory</a>
+		<a href="login.html">Login</a>
+		<a href="#">Sign up</a>
+	</div>
+
+	<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+	<div class="head1">
+		<h1>UNiBook HUb</h1>
+		<p>Your online gateway to endless books of Computational Sciences.</p>
+	</div>
+
+	<nav>
+		<a href="#">Home</a>
+		<a href="#">Explore</a>
+		<a href="#">Genres</a>
+		<a href="#">Contact</a>
+	</nav>
+
+	<div class="hub">
+		<h1>Dive into Worlds Unknown</h1>
+		<p>Discover a curated collection of technical treasures.</p>
+		<button onclick="alert('Start your literary journey!')">Start Exploring</button>
+	</div>
+
+	<section class="featured-books">
+		<h2>Our Featured Selections</h2>
+		<div class="book-grid">
+			<div class="book">
+				<img src="let us c.jpg" alt="Book 1">
+				<div class="book-info">
+					<h3>Let Us C</h3>
+					<p>Yashvant Kanetkar</p>
+				</div>
+			</div>
+			<div class="book">
+				<img src="os.jpg" alt="Book 2">
+				<div class="book-info">
+					<h3>Operating System Concept</h3>
+					<p>Wiley Loose</p>
+				</div>
+			</div>
+			<div class="book">
+				<img src="dsa.webp" alt="Book 3">
+				<div class="book-info">
+					<h3>Data Stucture Using C</h3>
+					<p>Reema Thareja</p>
+				</div>
+			</div>
+			<div class="book">
+				<img src="php.jpg" alt="Book 4">
+				<div class="book-info">
+					<h3>PHP and MySQL for Dynamic Web Sites</h3>
+					<p>Larry Ullman</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer>
+		<p>&copy; 2025 University Book Hub. All rights reserved.</p>
+	</footer>
+	<script>
+
+		function toggleSidebar() {
+			document.getElementById("sidebar").classList.toggle("active");
+			document.getElementById("overlay").classList.toggle("active");
+			document.getElementById("hamburger").classList.toggle("active");
+		}
+
+		function closeSidebar() {
+			document.getElementById("sidebar").classList.remove("active");
+			document.getElementById("overlay").classList.remove("active");
+			document.getElementById("hamburger").classList.toggle("active");
+		}
+
+		document.getElementById('exploreButton').addEventListener('click', function () {
+			alert('Exploring books...');
+		});
+
+
+		const books = [
+			{ title: "New Book 1", author: "Author A", imageUrl: "newbook1.jpg" },
+			{ title: "New Book 2", author: "Author B", imageUrl: "newbook2.jpg" },
+		];
+
+		const bookGrid = document.getElementById('bookGrid');
+
+		books.forEach(book => {
+			const bookElement = document.createElement('div');
+			bookElement.classList.add('book');
+			bookElement.innerHTML = `
+        <img src="${book.imageUrl}" alt="${book.title}">
+        <div class="book-info">
+          <h3>${book.title}</h3>
+          <p>${book.author}</p>
+        </div>
+      `;
+			bookGrid.appendChild(bookElement);
+		});
+
+		// Example: Changing the navbar style on scroll
+		window.addEventListener('scroll', function () {
+			const navbar = document.getElementById('navbar');
+			if (window.scrollY > 50) {
+				navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'; // Darker background on scroll
+				navbar.style.padding = '0.5em 0'; // Reduce padding on scroll
+			} else {
+				navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.05)'; // Original background
+				navbar.style.padding = '1em 0'; // Original padding
+			}
+		});
+
+		//Example: Smooth Scroll to sections.
+		document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+			anchor.addEventListener('click', function (e) {
+				e.preventDefault();
+
+				const targetId = this.getAttribute('href').substring(1); //remove the #
+				const targetElement = document.getElementById(targetId);
+
+				if (targetElement) {
+					window.scrollTo({
+						top: targetElement.offsetTop,
+						behavior: 'smooth'
+					});
+				}
+			});
+		});
+
+		//Example: Add active class to nav link on click.
+		document.querySelectorAll('nav a').forEach(link => {
+			link.addEventListener('click', function () {
+				document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+				this.classList.add('active');
+			});
+		});
+	</script>
+
+</body>
+
+</html>
